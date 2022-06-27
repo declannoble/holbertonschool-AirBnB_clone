@@ -17,10 +17,14 @@ class BaseModel:
         """Initialises data """
         if kwargs:
             for key, value in kwargs.items():
-                if hasattr(self, "created_at") and type(self.created_at) is str:
-                    self.created_at = datetime.strptime(kwargs["created_at"], t)
-                if hasattr(self, "updated_at") and type(self.updated_at) is str:
-                    self.updated_at = datetime.strptime(kwargs["updated_at"], t)
+                if hasattr(self, "created_at") and\
+                   type(self.created_at) is str:
+                    self.created_at = datetime.\
+                        strptime(kwargs["created_at"], t)
+                if hasattr(self, "updated_at") and\
+                   type(self.updated_at) is str:
+                    self.updated_at = datetime.\
+                        strptime(kwargs["updated_at"], t)
                 if key != "__class__":
                     setattr(self, key, value)
         else:
@@ -32,7 +36,7 @@ class BaseModel:
     def __str__(self):
         """ Returns a readable string representation
         of an instance"""
-        return (f"[self.__cls.__name__] ({self.id}) {self.__dict__}")
+        return (f"[{self.__class__.__name__}] ({self.id}) {self.__dict__}")
 
     def save(self):
         """ Updates public attr updated_at with current datetime """

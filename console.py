@@ -73,6 +73,19 @@ based on the class name and id"""
                     listOfObjectToPrint.append(str(value))
         print(listOfObjectToPrint)
 
+    def do_update(self, arg):
+        """Deletes an instance based on the class name and id"""
+        lineAsArgs = shlex.split(arg)
+        if not self.verify_class_in_project(lineAsArgs):
+            return
+        if not self.verify_id_exists(lineAsArgs):
+            return
+        if not self.verify_attribute_arguments(lineAsArgs):
+            return
+        objectAsKey = str(lineAsArgs[0]) + '.' + str(lineAsArgs[1])
+        setattr(models.storage.all()[objectAsKey], lineAsArgs[2], lineAsArgs[3])
+        models.storage.all()[objectAsKey].save()
+
     @classmethod
     def verify_class_in_project(cls, args):
         """verify that class being created is defined in the project
@@ -95,6 +108,18 @@ based on the class name and id"""
         string_key = str(args[0]) + '.' + str(args[1])
         if string_key not in objects.keys():
             print("** no instance found **")
+            return False
+        return True
+
+    @staticmethod
+    def verify_attribute_arguments(args):
+        """verify the attribute argument was passed correctly
+        """
+        if len(args) < 3:
+            print("** attribute name missing **")
+            return False
+        if len(args) < 4:
+            print("** value missing **")
             return False
         return True
 

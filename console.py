@@ -6,6 +6,8 @@ This contains and runs the CMD module and handles th entry point for the project
 
 import cmd
 import shlex
+import models
+from models.base_model import BaseModel
 
 class HBNBCommand(cmd.Cmd):
     prompt = '(hbnb) '
@@ -26,25 +28,53 @@ class HBNBCommand(cmd.Cmd):
     def do_create(self, arg):
         """Creates a new instance of a class and prints ID and saves to file"""
         lineAsArgs = shlex.split(arg)
-        if not self.verify_class(lineAsArgs):
+        if not self.verify_class_in_project(lineAsArgs):
             return
         newInstance = eval(str(lineAsArgs[0]) + '()')
         print(newInstance.id)
-        # need to code in the save to file aspect of this method when the
-        # BaseModel is created
+        newInstance.save()
 
     def do_show(self, arg):
         """Prints the string representation of an instance
-        based on the class name and id"""
+based on the class name and id"""
         lineAsArgs = shlex.split(arg)
-        if not self.verify_class(lineAsArgs):
+        if not self.verify_class_in_project(lineAsArgs):
             return
-        if not self.verify_id(lineAsArgs):
+        if not self.verify_id_exists(lineAsArgs):
             return
-        # will have the code to display information here once we get a better idea of the project.
+        objectAsKey = str(lineAsArgs[0]) + '.' + str(lineAsArgs[1])
+        objectsInStorage = models.storage.all()
+        print(objectsInStorage[objectAsKey])
+
+    def do_destroy(self, arg):
+        """Deletes an instance based on the class name and id"""
+        lineAsArgs = shlex.split(arg)
+        if not self.verify_class_in_project(lineAsArgs):
+            return
+        if not self.verify_id_exists(lineAsArgs):
+            return
+        objectAsKey = str(lineAsArgs[0]) + '.' + str(lineAsArgs[1])
+        models.storage.all().pop(objectAsKey)
+        models.storage.save()
+
+    def do_all(self, arg):
+        """Prints list of strings of all instances or specified instances"""
+        lineAsArgs = shlex.split(arg)
+        objectsInStorage = models.storage.all()
+        listOfObjectToPrint = []
+        if len(lineAsArgs) == 0:
+            for value in objectsInStorage.values():
+                listOfObjectToPrint.append(str(value))
+        else:
+            if not self.verify_class_in_project(lineAsArgs):
+                return
+            for (key, value) in objectsInStorage.items():
+                if lineAsArgs[0] in key:
+                    listOfObjectToPrint.append(str(value))
+        print(listOfObjectToPrint)
 
     @classmethod
-    def verify_class(cls, args):
+    def verify_class_in_project(cls, args):
         """verify that class being created is defined in the project
         """
         if len(args) == 0:
@@ -56,10 +86,17 @@ class HBNBCommand(cmd.Cmd):
         return True
 
     @staticmethod
-    def verify_id(args):
-        """verify that the ID being used exists"""
-        #no idea how this will work just yet, will need to look at others code
-        pass
+    def verify_id_exists(args):
+        """verify that the ID being called exists"""
+        if len(args) < 2:
+            print("** instance id missing **")
+            return False
+        objects = models.storage.all()
+        string_key = str(args[0]) + '.' + str(args[1])
+        if string_key not in objects.keys():
+            print("** no instance found **")
+            return False
+        return True
 
 if __name__ == '__main__':
     HBNBCommand().cmdloop()

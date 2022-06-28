@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 """
-Contains tests for Base class
+test module for testing city models
 """
 
 import unittest
@@ -9,8 +9,9 @@ import pycodestyle
 import json
 import os
 import datetime
-import models
-Base = models.base_model.BaseModel
+from models.base_model import BaseModel
+from models import city
+City = city.City
 
 
 class TestBaseDocs(unittest.TestCase):
@@ -19,29 +20,29 @@ class TestBaseDocs(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         """Set up for the doc tests"""
-        cls.base_funcs = inspect.getmembers(Base, inspect.isfunction)
+        cls.base_funcs = inspect.getmembers(City, inspect.isfunction)
 
     def test_conformance_class(self):
         """Test that we conform to Pycodestyle."""
         style = pycodestyle.StyleGuide(quiet=True)
-        result = style.check_files(['models/base_model.py'])
+        result = style.check_files(['models/city.py'])
         self.assertEqual(result.total_errors, 0,
                          "Found code style errors (and warnings).")
 
     def test_conformance_test(self):
         """Test that we conform to Pycodestyle."""
         style = pycodestyle.StyleGuide(quiet=True)
-        result = style.check_files(['tests/test_models/test_base_model.py'])
+        result = style.check_files(['tests/test_models/test_city.py'])
         self.assertEqual(result.total_errors, 0,
                          "Found code style errors (and warnings).")
 
     def test_module_docstr(self):
         """ Tests for docstring"""
-        self.assertTrue(len(Base.__doc__) >= 1)
+        self.assertTrue(len(City.__doc__) >= 1)
 
     def test_class_docstr(self):
         """ Tests for docstring"""
-        self.assertTrue(len(Base.__doc__) >= 1)
+        self.assertTrue(len(City.__doc__) >= 1)
 
     def test_func_docstr(self):
         """Tests for docstrings in all functions"""
@@ -54,8 +55,8 @@ class TestBaseModel(unittest.TestCase):
 
     def setUp(self):
         """ general test setup, will create a temp baseModel """
-        self.temp_b = Base()
-        self.temp_b1 = Base()
+        self.temp_b = City()
+        self.temp_b1 = City()
 
     def tearDown(self):
         """ general tear down, will delete the temp baseModel """
@@ -64,8 +65,8 @@ class TestBaseModel(unittest.TestCase):
 
     def test_type_creation(self):
         """ will test the correct type of creation """
-        self.assertEqual(type(self.temp_b), Base)
-        self.assertEqual(type(self.temp_b1), Base)
+        self.assertEqual(type(self.temp_b), City)
+        self.assertEqual(type(self.temp_b1), City)
 
     def test_uuid(self):
         """test UUID for BaseModel """
@@ -79,17 +80,14 @@ class TestBaseModel(unittest.TestCase):
                          '-[0-9a-f]{4}-[0-9a-f]{4}'
                          '-[0-9a-f]{12}$')
 
-    def test_update(self):
+    def test_default_values(self):
         """ will test the ability to update """
-        self.temp_b.name = "Betty"
-        self.temp_b.age = 105
-        self.assertEqual(self.temp_b.name, "Betty")
-        self.assertEqual(self.temp_b.age, 105)
+        self.assertEqual(self.temp_b.name, "")
 
     def test_str_method(self):
         """ will test the __str__ method to ensure it is working """
         returned_string = str(self.temp_b)
-        test_string = f"[BaseModel] ({self.temp_b.id}) {self.temp_b.__dict__}"
+        test_string = f"[City] ({self.temp_b.id}) {self.temp_b.__dict__}"
         self.assertEqual(returned_string, test_string)
 
     def test_to_dict(self):

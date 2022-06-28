@@ -8,10 +8,20 @@ import cmd
 import shlex
 import models
 from models.base_model import BaseModel
+from models.city import City
+from models.place import Place
+from models.review import Review
+from models.state import State
+from models.user import User
+
+
+
+
 
 class HBNBCommand(cmd.Cmd):
     prompt = '(hbnb) '
-    listOfProjectClass = ["BaseModel"]
+    listOfProjectClass = ["BaseModel", "City", "Place", "Review", "State",
+                          "User"]
 
     def do_EOF(self, arg):
         """Exits console"""

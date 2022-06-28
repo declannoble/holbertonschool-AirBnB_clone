@@ -30,10 +30,10 @@ information on all our testing
 console description
 (what have we coded that the console can do?)
 
-### base_model.py
+### [base_model.py](/models/base_model.py)
 base model description
 
-### file_storage.py //make into a link to the file//
+### [file_storage.py](/models/engine/file_storage.py)
 
 ## Examples
 

@@ -1,4 +1,4 @@
-# ⛱️ AirBnB Clone Project v1
+# ⛱️ AirBnB Clone Project - The Console
 ![hbnb](https://user-images.githubusercontent.com/91517809/176107896-998e3280-f565-4e09-a801-c609984bfed6.png)
 
 This console is the first part of the AirBnB project at the Holberton school.
@@ -33,7 +33,7 @@ cd holbertonschool-AirBnB_clone
 (hbnb) quit
 ```
 
-## 🛩️ Operation Modes
+## 🚀 Operation Modes
 
 #### Interactive mode
 In the interactive mode, the console will display (hbnb) prompting the user to type in and execute a command. After the command is run, the prompt (hbnb) will appear again in a new line waiting for a new command to be entered. As long as the user doesn't quit the shell (by typing quit and pressing enter), this will go indefinitely. 

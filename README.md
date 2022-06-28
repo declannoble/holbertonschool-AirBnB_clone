@@ -12,11 +12,11 @@ This project has been completed on Ubuntu 20.04 using python3 (3.8.5)
 
 ## ⚙️ Installation
 
-> Step 1 - Clone the repo locally using this command 
+> Step 1 - Clone the repo locally using this command
 ```
 gh repo clone chiaracaprasi/holbertonschool-AirBnB_clone
 ```
-> Step 2 - Navigate to the folder 
+> Step 2 - Navigate to the folder
 ```
 cd holbertonschool-AirBnB_clone
 ```
@@ -26,9 +26,9 @@ cd holbertonschool-AirBnB_clone
 ```
 > Step 4 - Type a command e.g.
 ```
-(hbnb) help 
+(hbnb) help
 ```
-> Step 5 - Exit the shell 
+> Step 5 - Exit the shell
 ```
 (hbnb) quit
 ```
@@ -37,7 +37,7 @@ cd holbertonschool-AirBnB_clone
 
 #### Interactive mode
 In the interactive mode, the console will display (hbnb) prompting the user to type in and execute a command. After the command is run, the prompt (hbnb) will appear again in a new line waiting for a new command to be entered. As long as the user doesn't quit the shell (by typing quit and pressing enter), this will go indefinitely. 
-Example: 
+Example:
 
 ```
 $ ./console.py
@@ -47,8 +47,8 @@ Documented commands (type help <topic>):
 ========================================
 EOF  help  quit
 
-(hbnb) 
-(hbnb) 
+(hbnb)
+(hbnb)
 (hbnb) quit
 $
 ```
@@ -64,7 +64,7 @@ $ echo "help" | ./console.py
 
 Documented commands (type help <topic>):
 EOF  help  quit
-(hbnb) 
+(hbnb)
 $
 $ cat test_help
 help
@@ -109,14 +109,26 @@ echo "python3 -m unittest discover tests" | bash
 | [base_model.py](/models/base_model.py)            | base class which  defines common attributes/ methods | id, created_at, updated_at                                                                                                           |
 
 ### [console.py](console.py)
-console description
-(what have we coded that the console can do?)
+The console contains the entry point of the interpreter, the list of commands
+the interpreter supports are as follows:
+* `EOF` - exits console 
+* `quit` - exits console
+* `create` - Creates a new instance of`BaseModel`, saves it (to the JSON file) and prints the id
+* `destroy` - Deletes an instance based on the class name and id (save the change into the JSON file). 
+* `show` - Prints the string representation of an instance based on the class name and id.
+* `all` - Prints all string representation of all instances based or not on the class name. 
+* `update` - Updates an instance based on the class name and id by adding or updating attribute (save the change into the JSON file). 
+
 
 ### [base_model.py](/models/base_model.py)
 base model description
 
 ### [file_storage.py](/models/engine/file_storage.py)
-
+The file_storage file serializes instances to a JSON file & deserializes back to instances
+* `def all(self)` - returns the dictionary __objects
+* `def new(self, obj)` - sets in __objects the obj with key <obj class name>.id
+* `def save(self)` - serializes __objects to the JSON file (path: __file_path)
+* ` def reload(self)` -  deserializes the JSON file to __objects
 
 ## 🛖 Examples
 

@@ -121,7 +121,12 @@ the interpreter supports are as follows:
 
 
 ### [base_model.py](/models/base_model.py)
-base model description
+The BaseModel class is the class which future classes will inherit from.
+* `def __init__(self, *args, **kwargs)` - Initialization of the base model
+* `def __str__(self)` - String representation of the BaseModel class
+* `def save(self)` - Updates the attribute `updated_at` with the current datetime
+* `def to_dict(self)` - returns a dictionary containing all keys/values of the instance
+
 
 ### [file_storage.py](/models/engine/file_storage.py)
 The file_storage file serializes instances to a JSON file & deserializes back to instances

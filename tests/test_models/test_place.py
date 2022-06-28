@@ -82,7 +82,17 @@ class TestBaseModel(unittest.TestCase):
 
     def test_default_values(self):
         """ will test the ability to update """
+        self.assertEqual(self.temp_b.city_id, "")
+        self.assertEqual(self.temp_b.user_id, "")
         self.assertEqual(self.temp_b.name, "")
+        self.assertEqual(self.temp_b.description, "")
+        self.assertEqual(self.temp_b.number_rooms, 0)
+        self.assertEqual(self.temp_b.number_bathrooms, 0)
+        self.assertEqual(self.temp_b.max_guest, 0)
+        self.assertEqual(self.temp_b.price_by_night, 0)
+        self.assertEqual(self.temp_b.latitude, 0.0)
+        self.assertEqual(self.temp_b.longitude, 0.0)
+        self.assertEqual(self.temp_b.amenity_ids, [])
 
     def test_str_method(self):
         """ will test the __str__ method to ensure it is working """

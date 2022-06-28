@@ -8,7 +8,11 @@ to manage objects for the website.
 ## Environment:
 This project has been completed on Ubuntu 20.04 using python3 (3.8.5)
 
+## Installation
+steps to take to install and run on your terminal
+
 ## Testing:
+information on all our testing
 
 ## Files:
 | FILES           | DESCRIPTION                                          | ATTRIBUTES                                                                                                                           |
@@ -21,3 +25,18 @@ This project has been completed on Ubuntu 20.04 using python3 (3.8.5)
 | city.py         | city class                                           | state_id, name                                                                                                                       |
 | file_storage.py | class to handle storage of date                      | __file_path, __objects                                                                                                               |
 | base_model.py   | base class which  defines common attributes/ methods | id, created_at, updated_at                                                                                                           |
+
+### console.py
+console description
+(what have we coded that the console can do?)
+
+### base_model.py
+base model description
+
+### file_storage.py //make into a link to the file//
+
+## Examples
+
+## Bugs
+
+## Authors

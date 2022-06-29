@@ -31,6 +31,9 @@ class HBNBCommand(cmd.Cmd):
                             "update": self.do_update,
                             "destroy": self.do_destroy,
                             "all": self.do_all}
+        if "." not in line:
+            print("*** unknown syntax: " + line)
+            return
         lineAsArgs = re.findall(r"[\w']+|[.()]", line)
         if not self.verify_class_for_default(lineAsArgs[0]):
             print("*** unknown syntax: " + line)
@@ -41,7 +44,7 @@ class HBNBCommand(cmd.Cmd):
             return
         methodName = lineAsArgs[2]
         if "(" not in line or ")" not in line[-1]:
-            print("*** missing ()")
+            print("*** missing ( or )")
             return
         argumentString = self.create_argument_string(line, className)
         listOfCmdMethods[methodName](argumentString)
@@ -54,7 +57,6 @@ class HBNBCommand(cmd.Cmd):
         if "," in stringToSend:
             stringToSend = stringToSend.replace(",","")
         return (stringToSend)
-
 
     def do_EOF(self, arg):
         """Exits console"""

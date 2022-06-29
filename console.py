@@ -1,7 +1,8 @@
 #!/usr/bin/python3
 """
 Entry point for the AirBNB clone console
-This contains and runs the CMD module and handles th entry point for the project
+This contains and runs the CMD module and handles th entry
+point for the project
 """
 
 import cmd
@@ -14,9 +15,6 @@ from models.place import Place
 from models.review import Review
 from models.state import State
 from models.user import User
-
-
-
 
 
 class HBNBCommand(cmd.Cmd):
@@ -55,7 +53,7 @@ class HBNBCommand(cmd.Cmd):
         argumentsAsAString = string.split("(")
         stringToSend = className + " " + argumentsAsAString[1][:-1]
         if "," in stringToSend:
-            stringToSend = stringToSend.replace(",","")
+            stringToSend = stringToSend.replace(",", "")
         return (stringToSend)
 
     def do_EOF(self, arg):
@@ -125,12 +123,13 @@ based on the class name and id"""
             return
         if not self.verify_id_exists(lineAsArgs):
             return
-        #put in check to see if dictionary and nest the folowing statement inside
+        # put in check to see if dictionary
+        # nest the folowing statement inside
         if not self.verify_attribute_arguments(lineAsArgs):
             return
-        objectAsKey = str(lineAsArgs[0]) + '.' + str(lineAsArgs[1])
-        setattr(models.storage.all()[objectAsKey], lineAsArgs[2], lineAsArgs[3])
-        models.storage.all()[objectAsKey].save()
+        objAsKey = str(lineAsArgs[0]) + '.' + str(lineAsArgs[1])
+        setattr(models.storage.all()[objAsKey], lineAsArgs[2], lineAsArgs[3])
+        models.storage.all()[objAsKey].save()
 
     @classmethod
     def verify_class_for_default(cls, classNameToCheck):
@@ -176,6 +175,7 @@ based on the class name and id"""
             print("** value missing **")
             return False
         return True
+
 
 if __name__ == '__main__':
     HBNBCommand().cmdloop()

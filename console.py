@@ -28,7 +28,8 @@ class HBNBCommand(cmd.Cmd):
                             "create": self.do_create,
                             "update": self.do_update,
                             "destroy": self.do_destroy,
-                            "all": self.do_all}
+                            "all": self.do_all,
+                            "count": self.count_instance}
         if "." not in line:
             print("*** unknown syntax: " + line)
             return
@@ -90,7 +91,7 @@ based on the class name and id"""
         print(objectsInStorage[objectAsKey])
 
     def do_destroy(self, arg):
-        """Deletes an instance based on the class name and id"""
+
         lineAsArgs = shlex.split(arg)
         if not self.verify_class_in_project(lineAsArgs):
             return
@@ -130,6 +131,16 @@ based on the class name and id"""
         objAsKey = str(lineAsArgs[0]) + '.' + str(lineAsArgs[1])
         setattr(models.storage.all()[objAsKey], lineAsArgs[2], lineAsArgs[3])
         models.storage.all()[objAsKey].save()
+
+    def count_instance(self, arg):
+        """retrieves number of instances of a class"""
+        count = 0
+        instanceStorage = models.storage.all()
+        arg = shlex.split(arg)
+        for (key, value) in instanceStorage.items():
+            if arg[0] in key:
+                count += 1
+        print (count)
 
     @classmethod
     def verify_class_for_default(cls, classNameToCheck):

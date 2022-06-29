@@ -7,6 +7,7 @@ This contains and runs the CMD module and handles th entry point for the project
 import cmd
 import shlex
 import models
+import re
 from models.base_model import BaseModel
 from models.city import City
 from models.place import Place
@@ -22,6 +23,38 @@ class HBNBCommand(cmd.Cmd):
     prompt = '(hbnb) '
     listOfProjectClass = ["BaseModel", "City", "Place", "Review", "State",
                           "User"]
+
+    def default(self, line):
+        """ will be called when the input is not a recognised command"""
+        listOfCmdMethods = {"show": self.do_show,
+                            "create": self.do_create,
+                            "update": self.do_update,
+                            "destroy": self.do_destroy,
+                            "all": self.do_all}
+        lineAsArgs = re.findall(r"[\w']+|[.()]", line)
+        if not self.verify_class_for_default(lineAsArgs[0]):
+            print("*** unknown syntax: " + line)
+            return
+        className = lineAsArgs[0]
+        if lineAsArgs[2] not in listOfCmdMethods:
+            print("*** command: " + lineAsArgs[2] + " is not reccognised")
+            return
+        methodName = lineAsArgs[2]
+        if "(" not in line or ")" not in line[-1]:
+            print("*** missing ()")
+            return
+        argumentString = self.create_argument_string(line, className)
+        listOfCmdMethods[methodName](argumentString)
+
+    @staticmethod
+    def create_argument_string(string, className):
+        """ this method is used to create a compatible string argument"""
+        argumentsAsAString = string.split("(")
+        stringToSend = className + " " + argumentsAsAString[1][:-1]
+        if "," in stringToSend:
+            stringToSend = stringToSend.replace(",","")
+        return (stringToSend)
+
 
     def do_EOF(self, arg):
         """Exits console"""
@@ -90,11 +123,20 @@ based on the class name and id"""
             return
         if not self.verify_id_exists(lineAsArgs):
             return
+        #put in check to see if dictionary and nest the folowing statement inside
         if not self.verify_attribute_arguments(lineAsArgs):
             return
         objectAsKey = str(lineAsArgs[0]) + '.' + str(lineAsArgs[1])
         setattr(models.storage.all()[objectAsKey], lineAsArgs[2], lineAsArgs[3])
         models.storage.all()[objectAsKey].save()
+
+    @classmethod
+    def verify_class_for_default(cls, classNameToCheck):
+        """verify that class being created is defined in the project
+        """
+        if classNameToCheck not in cls.listOfProjectClass:
+            return False
+        return True
 
     @classmethod
     def verify_class_in_project(cls, args):

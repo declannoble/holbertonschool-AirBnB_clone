@@ -17,6 +17,7 @@ from models.state import State
 from models.user import User
 from models.amenity import Amenity
 
+
 class HBNBCommand(cmd.Cmd):
     prompt = '(hbnb) '
     listOfProjectClass = ["BaseModel", "City", "Place", "Review", "State",

@@ -146,8 +146,6 @@ based on the class name and id"""
                 setattr(models.storage.all()[objAsKey], key, value)
         models.storage.all()[objAsKey].save()
 
-<<<<<<< HEAD
-
     def count_instance(self, arg):
         """retrieves number of instances of a class"""
         count = 0
@@ -157,28 +155,17 @@ based on the class name and id"""
             if arg[0] in key:
                 count += 1
         print(count)
-=======
+
     @staticmethod
     def check_dictionary_exists(line):
         """ Method checks if update was passed a dictionary"""
         lineAsArgs = line.split("{")
-<<<<<<< HEAD
-        dictionaryAsString = "{" + lineAsArgs[1]
-        stringAsDictionary = ast.literal_eval(dictionaryAsString)
-        print(dictionaryAsString)
-        print(stringAsDictionary)
-        print(type(dictionaryAsString))
-        print(type(stringAsDictionary))
-        return None
->>>>>>> ac2578c... build: add in the dictionary update functionality to update method
-=======
         dictionaryInLine = "{" + lineAsArgs[1]
         try:
             typeDictionary = ast.literal_eval(dictionaryInLine)
         except SyntaxError:
             return None
         return (typeDictionary)
->>>>>>> d15bf42... build: add basic dictionary functionality to the create method.
 
     @classmethod
     def verify_class_for_default(cls, classNameToCheck):

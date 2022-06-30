@@ -9,6 +9,7 @@ import cmd
 import shlex
 import models
 import re
+import ast
 from models.base_model import BaseModel
 from models.city import City
 from models.place import Place
@@ -125,14 +126,16 @@ based on the class name and id"""
             return
         if not self.verify_id_exists(lineAsArgs):
             return
+        objAsKey = str(lineAsArgs[0]) + '.' + str(lineAsArgs[1])
         if "{" in arg:
             dictionaryToUpdate = self.check_dictionary_exists(arg)
-        if not self.verify_attribute_arguments(lineAsArgs):
-            return
-        objAsKey = str(lineAsArgs[0]) + '.' + str(lineAsArgs[1])
+        if dictionaryToUpdate is None:
+            if not self.verify_attribute_arguments(lineAsArgs):
+                return
         setattr(models.storage.all()[objAsKey], lineAsArgs[2], lineAsArgs[3])
         models.storage.all()[objAsKey].save()
 
+<<<<<<< HEAD
 
     def count_instance(self, arg):
         """retrieves number of instances of a class"""
@@ -143,6 +146,19 @@ based on the class name and id"""
             if arg[0] in key:
                 count += 1
         print(count)
+=======
+    @staticmethod
+    def check_dictionary_exists(line):
+        """ Method checks if update was passed a dictionary"""
+        lineAsArgs = line.split("{")
+        dictionaryAsString = "{" + lineAsArgs[1]
+        stringAsDictionary = ast.literal_eval(dictionaryAsString)
+        print(dictionaryAsString)
+        print(stringAsDictionary)
+        print(type(dictionaryAsString))
+        print(type(stringAsDictionary))
+        return None
+>>>>>>> ac2578c... build: add in the dictionary update functionality to update method
 
     @classmethod
     def verify_class_for_default(cls, classNameToCheck):

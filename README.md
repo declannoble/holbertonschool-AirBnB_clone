@@ -137,6 +137,10 @@ The file_storage file serializes instances to a JSON file & deserializes back to
 
 ## 🛖 Examples
 ```
+$ ./console.py
+
+(hbnb)
+
 (hbnb) BaseModel.create()
 
 a45fe3c4-3b89-4b50-91e9-213b2eae45e3
@@ -147,7 +151,7 @@ a45fe3c4-3b89-4b50-91e9-213b2eae45e3
 
 (hbnb) BaseModel.destroy(a45fe3c4-3b89-4b50-91e9-213b2eae45e3)
 
-(hbnb) BaseMode.show(a45fe3c4-3b89-4b50-91e9-213b2eae45e3)
+(hbnb) BaseModel.show(a45fe3c4-3b89-4b50-91e9-213b2eae45e3)
 
 ** no instance found **
 (hbnb) EOF

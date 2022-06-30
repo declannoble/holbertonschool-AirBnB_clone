@@ -138,11 +138,17 @@ The file_storage file serializes instances to a JSON file & deserializes back to
 ## 🛖 Examples
 ```
 (hbnb) BaseModel.create()
+
 a45fe3c4-3b89-4b50-91e9-213b2eae45e3
+
 (hbnb) BaseModel.show(a45fe3c4-3b89-4b50-91e9-213b2eae45e3)
+
 [BaseModel] (a45fe3c4-3b89-4b50-91e9-213b2eae45e3) {'id': 'a45fe3c4-3b89-4b50-91e9-213b2eae45e3', 'created_at': datetime.datetime(2022, 6, 29, 17, 0, 38, 333356), 'updated_at': datetime.datetime(2022, 6, 29, 17, 0, 38, 333406)}
+
 (hbnb) BaseModel.destroy(a45fe3c4-3b89-4b50-91e9-213b2eae45e3)
+
 (hbnb) BaseMode.show(a45fe3c4-3b89-4b50-91e9-213b2eae45e3)
+
 ** no instance found **
 (hbnb) EOF
 ```

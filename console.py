@@ -100,7 +100,7 @@ based on the class name and id"""
         print(objectsInStorage[objectAsKey])
 
     def do_destroy(self, arg):
-
+        """Deletes an instance based on the class name and id"""
         lineAsArgs = shlex.split(arg)
         if not self.verify_class_in_project(lineAsArgs):
             return

@@ -15,12 +15,12 @@ from models.place import Place
 from models.review import Review
 from models.state import State
 from models.user import User
-
+from models.amenity import Amenity
 
 class HBNBCommand(cmd.Cmd):
     prompt = '(hbnb) '
     listOfProjectClass = ["BaseModel", "City", "Place", "Review", "State",
-                          "User"]
+                          "User", "Amenity"]
 
     def default(self, line):
         """ will be called when the input is not a recognised command"""

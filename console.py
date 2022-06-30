@@ -54,10 +54,17 @@ class HBNBCommand(cmd.Cmd):
     def create_argument_string(string, className):
         """ this method is used to create a compatible string argument"""
         argumentsAsAString = string.split("(")
-        stringToSend = className + " " + argumentsAsAString[1][:-1]
-        if "," in stringToSend:
-            stringToSend = stringToSend.replace(",", "")
-        return (stringToSend)
+        classEditInformation = argumentsAsAString[1][:-1]
+        argumentString = className + " " + classEditInformation
+        if "," in argumentString:
+            if "{" in argumentString:
+                dictionaryAlter = argumentString.split("{")
+                firstArgument = dictionaryAlter[0].replace(",", "")
+                secondArgument = "{" + dictionaryAlter[1]
+                argumentString = firstArgument + secondArgument
+            else:
+                argumentString = argumentString.replace(",", "")
+        return (argumentString)
 
     def do_EOF(self, arg):
         """Exits console"""
@@ -119,20 +126,24 @@ based on the class name and id"""
                     listOfObjectToPrint.append(str(value))
         print(listOfObjectToPrint)
 
-    def do_update(self, arg):
+    def do_update(self, line):
         """Deletes an instance based on the class name and id"""
-        lineAsArgs = shlex.split(arg)
-        if not self.verify_class_in_project(lineAsArgs):
+        lineArgs = shlex.split(line)
+        ArgLineDict = None
+        if not self.verify_class_in_project(lineArgs):
             return
-        if not self.verify_id_exists(lineAsArgs):
+        if not self.verify_id_exists(lineArgs):
             return
-        objAsKey = str(lineAsArgs[0]) + '.' + str(lineAsArgs[1])
-        if "{" in arg:
-            dictionaryToUpdate = self.check_dictionary_exists(arg)
-        if dictionaryToUpdate is None:
-            if not self.verify_attribute_arguments(lineAsArgs):
+        objAsKey = str(lineArgs[0]) + '.' + str(lineArgs[1])
+        if "{" in line:
+            ArgLineDict = self.check_dictionary_exists(line)
+        if ArgLineDict is None:
+            if not self.verify_attribute_arguments(lineArgs):
                 return
-        setattr(models.storage.all()[objAsKey], lineAsArgs[2], lineAsArgs[3])
+            setattr(models.storage.all()[objAsKey], lineArgs[2], lineArgs[3])
+        if isinstance(ArgLineDict, dict):
+            for (key, value) in ArgLineDict.items():
+                setattr(models.storage.all()[objAsKey], key, value)
         models.storage.all()[objAsKey].save()
 
 <<<<<<< HEAD
@@ -151,6 +162,7 @@ based on the class name and id"""
     def check_dictionary_exists(line):
         """ Method checks if update was passed a dictionary"""
         lineAsArgs = line.split("{")
+<<<<<<< HEAD
         dictionaryAsString = "{" + lineAsArgs[1]
         stringAsDictionary = ast.literal_eval(dictionaryAsString)
         print(dictionaryAsString)
@@ -159,6 +171,14 @@ based on the class name and id"""
         print(type(stringAsDictionary))
         return None
 >>>>>>> ac2578c... build: add in the dictionary update functionality to update method
+=======
+        dictionaryInLine = "{" + lineAsArgs[1]
+        try:
+            typeDictionary = ast.literal_eval(dictionaryInLine)
+        except SyntaxError:
+            return None
+        return (typeDictionary)
+>>>>>>> d15bf42... build: add basic dictionary functionality to the create method.
 
     @classmethod
     def verify_class_for_default(cls, classNameToCheck):

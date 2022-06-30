@@ -96,22 +96,12 @@ echo "python3 -m unittest discover tests" | bash
 
 
 
-## 📁 Files:
-| FILES                                             | DESCRIPTION                                          | ATTRIBUTES                                                                                                                           |
-|---------------------------------------------------|------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------|
-| [user.py](/models/user.py)                        | user class                                           | email, password, first_name, last_name                                                                                               |
-| [amenity.py](/models/amenity.py)                  | amenity class                                        | name                                                                                                                                 |
-| [place.py](/models/place.py)                      | place class                                          | city_id, user_id, name, description, number_of_rooms, longitude, latitude, max_guests, number_bathrooms, price_by_night, amenity_ids |
-| [review.py](/models/review.py)                    | review class                                         | place_id, user_id, text                                                                                                              |
-| [state.py](/models/state.py)                      | state class                                          | name                                                                                                                                 |
-| [city.py](/models/city.py)                        | city class                                           | state_id, name                                                                                                                       |
-| [file_storage.py](/models/engine/file_storage.py) | class to handle storage of date                      | __file_path, __objects                                                                                                               |
-| [base_model.py](/models/base_model.py)            | base class which  defines common attributes/ methods | id, created_at, updated_at                                                                                                           |
+## 📁 File descriptions:
 
 ### [console.py](console.py)
 The console contains the entry point of the interpreter, the list of commands
 the interpreter supports are as follows:
-* `EOF` - exits console 
+* `EOF` - exits console
 * `quit` - exits console
 * `create` - Creates a new instance of`BaseModel`, saves it (to the JSON file) and prints the id
 * `destroy` - Deletes an instance based on the class name and id (save the change into the JSON file). 
@@ -126,7 +116,14 @@ The BaseModel class is the class which future classes will inherit from.
 * `def __str__(self)` - String representation of the BaseModel class
 * `def save(self)` - Updates the attribute `updated_at` with the current datetime
 * `def to_dict(self)` - returns a dictionary containing all keys/values of the instance
-
+| FILES TO INHERIT FROM BASEMODEL  | DESCRIPTION   | ATTRIBUTES                                                                                                                           |
+|----------------------------------|---------------|--------------------------------------------------------------------------------------------------------------------------------------|
+| [user.py](/models/user.py)       | user class    | email, password, first_name, last_name                                                                                               |
+| [amenity.py](/models/amenity.py) | amenity class | name                                                                                                                                 |
+| [place.py](/models/place.py)     | place class   | city_id, user_id, name, description, number_of_rooms, longitude, latitude, max_guests, number_bathrooms, price_by_night, amenity_ids |
+| [review.py](/models/review.py)   | review class  | place_id, user_id, text                                                                                                              |
+| [state.py](/models/state.py)     | state class   | name                                                                                                                                 |
+| [city.py](/models/city.py)       | city class    | state_id, name                                                                                                                       |
 
 ### [file_storage.py](/models/engine/file_storage.py)
 The file_storage file serializes instances to a JSON file & deserializes back to instances

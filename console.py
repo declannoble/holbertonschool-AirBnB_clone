@@ -123,13 +123,18 @@ based on the class name and id"""
             return
         if not self.verify_id_exists(lineAsArgs):
             return
-        # put in check to see if dictionary
-        # nest the folowing statement inside
+        if "{" in arg:
+            dictionaryToUpdate = self.check_dictionary_exists(arg)
         if not self.verify_attribute_arguments(lineAsArgs):
             return
         objAsKey = str(lineAsArgs[0]) + '.' + str(lineAsArgs[1])
         setattr(models.storage.all()[objAsKey], lineAsArgs[2], lineAsArgs[3])
         models.storage.all()[objAsKey].save()
+
+    @staticmethod
+    def check_dictionary_exists(self, line):
+        """ Method checks if update was passed a dictionary"""
+        pass
 
     @classmethod
     def verify_class_for_default(cls, classNameToCheck):

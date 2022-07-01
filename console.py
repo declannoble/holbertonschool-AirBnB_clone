@@ -53,8 +53,8 @@ class HBNBCommand(cmd.Cmd):
 ****HELP****
 Prints the string representation of an instance
 based on the class name and id.
-Usage: all <class name> <id>
-Useage: <class name>
+Usage: show <class name> <id>
+Usage: <class name>.show(<id>)
 """
         lineAsArgs = shlex.split(arg)
         if not self.verify_class_in_project(lineAsArgs):

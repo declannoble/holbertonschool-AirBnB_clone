@@ -24,7 +24,7 @@ class HBNBCommand(cmd.Cmd):
     listOfProjectClass = ["BaseModel", "City", "Place", "Review", "State",
                           "User", "Amenity"]
     intAttrs = ["number_rooms", "number_bathrooms", "max_guest",
-                 "price_by_night"]
+                "price_by_night"]
     floatAttrs = ["latitude", "longitude"]
 
     def do_EOF(self, arg):

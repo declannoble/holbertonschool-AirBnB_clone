@@ -71,7 +71,12 @@ Usage: <class name>.show(<id>)
         print(objectsInStorage[objectAsKey])
 
     def do_destroy(self, arg):
-        """Deletes an instance based on the class name and id"""
+        """
+****HELP****
+Deletes an instance based on the class name and id
+Usage: destroy <class name> <id>
+Usage: <class name>.destroy(<id>)
+"""
         lineAsArgs = shlex.split(arg)
         if not self.verify_class_in_project(lineAsArgs):
             return

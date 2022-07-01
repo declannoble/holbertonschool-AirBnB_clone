@@ -40,7 +40,12 @@ class HBNBCommand(cmd.Cmd):
         return True
 
     def do_create(self, arg):
-        """Creates a new instance of a class and prints ID and saves to file"""
+        """
+****HELP****
+Creates a new instance of a class and prints ID and saves to file.
+Usage: create <class name>
+Usage: <class name>.create()
+"""
         lineAsArgs = shlex.split(arg)
         if not self.verify_class_in_project(lineAsArgs):
             return
@@ -180,8 +185,6 @@ usage: <class name>.update(<id>, <dictionary representation>)"""
     def create_argument_string(string, className):
         """ this method is used to create a compatible string argument"""
         argumentInfo = re.findall(r"\((.*?)\)$", string)[0]
-        print(string)
-        print(argumentInfo)
         argumentString = className + " "
         if "," in argumentInfo:
             if "{" in argumentInfo:
@@ -194,6 +197,13 @@ usage: <class name>.update(<id>, <dictionary representation>)"""
         else:
             argumentString += " " + argumentInfo
         return (argumentString)
+
+    def help_count(self):
+        print("\n\
+****HELP****\n\
+Will count number of instances of a class.\n\
+Usage: <class name>.count()\n\
+")
 
     def count_instance(self, arg):
         """retrieves number of instances of a class"""

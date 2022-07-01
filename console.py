@@ -23,6 +23,9 @@ class HBNBCommand(cmd.Cmd):
     prompt = '(hbnb) '
     listOfProjectClass = ["BaseModel", "City", "Place", "Review", "State",
                           "User", "Amenity"]
+    intAttrs = ["number_rooms", "number_bathrooms", "max_guest",
+                 "price_by_night"]
+    floatAttrs = ["latitude", "longitude"]
 
     def default(self, line):
         """ will be called when the input is not a recognised command"""
@@ -140,11 +143,20 @@ based on the class name and id"""
         if ArgLineDict is None:
             if not self.verify_attribute_arguments(lineArgs):
                 return
-            setattr(models.storage.all()[objAsKey], lineArgs[2], lineArgs[3])
+            self.set_Attribute_correctly(objAsKey, lineArgs[2], lineArgs[3])
         if isinstance(ArgLineDict, dict):
             for (key, value) in ArgLineDict.items():
-                setattr(models.storage.all()[objAsKey], key, value)
+                self.set_Attribute_correctly(objAsKey, key, value)
         models.storage.all()[objAsKey].save()
+
+    def set_Attribute_correctly(self, objAsKey, key, value):
+        """sets the attributes with the correcy casting"""
+        if key in self.intAttrs:
+            setattr(models.storage.all()[objAsKey], key, int(value))
+        elif key in self.floatAttrs:
+            setattr(models.storage.all()[objAsKey], key, float(value))
+        else:
+            setattr(models.storage.all()[objAsKey], key, value)
 
     def count_instance(self, arg):
         """retrieves number of instances of a class"""

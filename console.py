@@ -27,48 +27,6 @@ class HBNBCommand(cmd.Cmd):
                  "price_by_night"]
     floatAttrs = ["latitude", "longitude"]
 
-    def default(self, line):
-        """ will be called when the input is not a recognised command"""
-        listOfCmdMethods = {"show": self.do_show,
-                            "create": self.do_create,
-                            "update": self.do_update,
-                            "destroy": self.do_destroy,
-                            "all": self.do_all,
-                            "count": self.count_instance}
-        if "." not in line:
-            print("*** unknown syntax: " + line)
-            return
-        lineAsArgs = re.findall(r"[\w']+|[.()]", line)
-        if not self.verify_class_for_default(lineAsArgs[0]):
-            print("*** unknown syntax: " + line)
-            return
-        className = lineAsArgs[0]
-        if lineAsArgs[2] not in listOfCmdMethods:
-            print("*** command: " + lineAsArgs[2] + " is not reccognised")
-            return
-        methodName = lineAsArgs[2]
-        if "(" not in line or ")" not in line[-1]:
-            print("*** missing ( or )")
-            return
-        argumentString = self.create_argument_string(line, className)
-        listOfCmdMethods[methodName](argumentString)
-
-    @staticmethod
-    def create_argument_string(string, className):
-        """ this method is used to create a compatible string argument"""
-        argumentsAsAString = string.split("(")
-        classEditInformation = argumentsAsAString[1][:-1]
-        argumentString = className + " " + classEditInformation
-        if "," in argumentString:
-            if "{" in argumentString:
-                dictionaryAlter = argumentString.split("{")
-                firstArgument = dictionaryAlter[0].replace(",", "")
-                secondArgument = "{" + dictionaryAlter[1]
-                argumentString = firstArgument + secondArgument
-            else:
-                argumentString = argumentString.replace(",", "")
-        return (argumentString)
-
     def do_EOF(self, arg):
         """Exits console"""
         return True
@@ -91,8 +49,13 @@ class HBNBCommand(cmd.Cmd):
         newInstance.save()
 
     def do_show(self, arg):
-        """Prints the string representation of an instance
-based on the class name and id"""
+        """
+****HELP****
+Prints the string representation of an instance
+based on the class name and id.
+Usage: all <class name> <id>
+Useage: <class name>
+"""
         lineAsArgs = shlex.split(arg)
         if not self.verify_class_in_project(lineAsArgs):
             return
@@ -114,7 +77,13 @@ based on the class name and id"""
         models.storage.save()
 
     def do_all(self, arg):
-        """Prints list of strings of all instances or specified instances"""
+        """
+****HELP****
+Prints list of strings of all instances or specified instances
+Usage: all - Prints every saved object
+Usage: all <class name> - prints every saved object of "class name"
+Usage: <class name>.all()
+"""
         lineAsArgs = shlex.split(arg)
         objectsInStorage = models.storage.all()
         listOfObjectToPrint = []
@@ -130,7 +99,15 @@ based on the class name and id"""
         print(listOfObjectToPrint)
 
     def do_update(self, line):
-        """Deletes an instance based on the class name and id"""
+        """
+****HELP****
+Updates an instance based on the class name and id.
+Usage: update <class name> <id>, <attribute name>, <attribute value>
+Usage: <class name>.update(<id>, <attribute name>, <attribute value>)
+****EXTRA****
+Can take a dictionary as input to update multiple attributes at once
+Usage: update <class name> <id>, <dictionary representation>
+usage: <class name>.update(<id>, <dictionary representation>)"""
         lineArgs = shlex.split(line)
         ArgLineDict = None
         if not self.verify_class_in_project(lineArgs):
@@ -149,25 +126,6 @@ based on the class name and id"""
                 self.set_Attribute_correctly(objAsKey, key, value)
         models.storage.all()[objAsKey].save()
 
-    def set_Attribute_correctly(self, objAsKey, key, value):
-        """sets the attributes with the correcy casting"""
-        if key in self.intAttrs:
-            setattr(models.storage.all()[objAsKey], key, int(value))
-        elif key in self.floatAttrs:
-            setattr(models.storage.all()[objAsKey], key, float(value))
-        else:
-            setattr(models.storage.all()[objAsKey], key, value)
-
-    def count_instance(self, arg):
-        """retrieves number of instances of a class"""
-        count = 0
-        instanceStorage = models.storage.all()
-        arg = shlex.split(arg)
-        for (key, value) in instanceStorage.items():
-            if arg[0] in key:
-                count += 1
-        print(count)
-
     @staticmethod
     def check_dictionary_exists(line):
         """ Method checks if update was passed a dictionary"""
@@ -178,6 +136,74 @@ based on the class name and id"""
         except SyntaxError:
             return None
         return (typeDictionary)
+
+    @classmethod
+    def set_Attribute_correctly(cls, objAsKey, key, value):
+        """sets the attributes with the correcy casting"""
+        if key in cls.intAttrs:
+            setattr(models.storage.all()[objAsKey], key, int(value))
+        elif key in cls.floatAttrs:
+            setattr(models.storage.all()[objAsKey], key, float(value))
+        else:
+            setattr(models.storage.all()[objAsKey], key, value)
+
+    def default(self, line):
+        """
+        will ensure input is recycled through to meet contracts
+        outlined in DBC methods
+        """
+        listOfCmdMethods = {"show": self.do_show,
+                            "create": self.do_create,
+                            "update": self.do_update,
+                            "destroy": self.do_destroy,
+                            "all": self.do_all,
+                            "count": self.count_instance}
+        if "." not in line:
+            print("*** unknown syntax: " + line)
+            return
+        lineAsArgs = re.findall(r"[\w']+|[.()]", line)
+        if not self.verify_class_for_default(lineAsArgs[0]):
+            print("*** unknown syntax: " + line)
+            return
+        className = lineAsArgs[0]
+        if lineAsArgs[2] not in listOfCmdMethods:
+            print("*** command: " + lineAsArgs[2] + " is not reccognised")
+            return
+        methodName = lineAsArgs[2]
+        if "(" not in line or ")" not in line[-1]:
+            self.display_parenthesis_error(line, lineAsArgs)
+            return
+        argumentString = self.create_argument_string(line, className)
+        listOfCmdMethods[methodName](argumentString)
+
+    @staticmethod
+    def create_argument_string(string, className):
+        """ this method is used to create a compatible string argument"""
+        argumentInfo = re.findall(r"\((.*?)\)$", string)[0]
+        print(string)
+        print(argumentInfo)
+        argumentString = className + " "
+        if "," in argumentInfo:
+            if "{" in argumentInfo:
+                InfoSplit = re.findall(r'(.*)(\{.*?\})$', argumentInfo)
+                firstArgument = InfoSplit[0][0].replace(",", "")
+                dictionaryInLine = InfoSplit[0][1]
+                argumentString += firstArgument + dictionaryInLine
+            else:
+                argumentString += argumentInfo.replace(",", "")
+        else:
+            argumentString += " " + argumentInfo
+        return (argumentString)
+
+    def count_instance(self, arg):
+        """retrieves number of instances of a class"""
+        count = 0
+        instanceStorage = models.storage.all()
+        arg = shlex.split(arg)
+        for (key, value) in instanceStorage.items():
+            if arg[0] in key:
+                count += 1
+        print(count)
 
     @classmethod
     def verify_class_for_default(cls, classNameToCheck):
@@ -223,6 +249,19 @@ based on the class name and id"""
             print("** value missing **")
             return False
         return True
+
+    @staticmethod
+    def display_parenthesis_error(line, lineArgs):
+        """displays correct error if input is missing parenthasis"""
+        printLine = "*** syntax error, missing parenthesis: "
+        if "(" not in line:
+            printLine += lineArgs[0] + "." + lineArgs[2] + "?(?"
+        if ")" not in line[-1]:
+            if printLine == "*** syntax error: ":
+                printLine += line + "?)?"
+            else:
+                printLine += "?)?"
+        print(printLine)
 
 
 if __name__ == '__main__':

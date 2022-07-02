@@ -10,6 +10,7 @@ import shlex
 import models
 import re
 import ast
+import inspect
 from models.base_model import BaseModel
 from models.city import City
 from models.place import Place
@@ -172,7 +173,7 @@ usage: <class name>.update(<id>, <dictionary representation>)"""
             print("*** unknown syntax: " + line)
             return
         if "(" not in line or ")" not in line[-1]:
-            print(line + "*** missing parenthesis")
+            print(line + " *** missing parenthesis")
             return
         lineAsArgs = re.findall(r"(.*?)\.(.*?)\((.*?)\)", line)
         if len(lineAsArgs) == 0:
@@ -205,7 +206,7 @@ usage: <class name>.update(<id>, <dictionary representation>)"""
             else:
                 argumentString += info.replace(",", "")
         else:
-            argumentString += " " + info
+            argumentString += info
         return (argumentString)
 
     def help_count(self):

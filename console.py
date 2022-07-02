@@ -171,36 +171,36 @@ usage: <class name>.update(<id>, <dictionary representation>)"""
         if "." not in line:
             print("*** unknown syntax: " + line)
             return
-        lineAsArgs = re.findall(r"[\w']+|[.()]", line)
-        if not self.verify_class_for_default(lineAsArgs[0]):
+        if "(" not in line or ")" not in line[-1]:
+            print(line + "*** missing parenthesis")
+            return
+        lineAsArgs = re.findall(r"(.*?)\.(.*?)\((.*?)\)", line)
+        if len(lineAsArgs) == 0:
             print("*** unknown syntax: " + line)
             return
-        className = lineAsArgs[0]
-        if lineAsArgs[2] not in listOfCmdMethods:
-            print("*** command: " + lineAsArgs[2] + " is not reccognised")
+        if lineAsArgs[0][1] not in listOfCmdMethods:
+            print("*** command: " + lineAsArgs[0][1] + " is not reccognised")
             return
-        methodName = lineAsArgs[2]
-        if "(" not in line or ")" not in line[-1]:
-            self.display_parenthesis_error(line, lineAsArgs)
-            return
-        argumentString = self.create_argument_string(line, className)
-        listOfCmdMethods[methodName](argumentString)
+        className = lineAsArgs[0][0]
+        method = lineAsArgs[0][1]
+        info = lineAsArgs[0][2]
+        argumentString = self.create_argument_string(className, method, info)
+        listOfCmdMethods[method](argumentString)
 
     @staticmethod
-    def create_argument_string(string, className):
+    def create_argument_string(className, method, info):
         """ this method is used to create a compatible string argument"""
-        argumentInfo = re.findall(r"\((.*?)\)$", string)[0]
         argumentString = className + " "
-        if "," in argumentInfo:
-            if "{" in argumentInfo:
-                InfoSplit = re.findall(r'(.*)(\{.*?\})$', argumentInfo)
+        if "," in info:
+            if "{" in info:
+                InfoSplit = re.findall(r'(.*)(\{.*?\})$', info)
                 firstArgument = InfoSplit[0][0].replace(",", "")
                 dictionaryInLine = InfoSplit[0][1]
                 argumentString += firstArgument + dictionaryInLine
             else:
-                argumentString += argumentInfo.replace(",", "")
+                argumentString += info.replace(",", "")
         else:
-            argumentString += " " + argumentInfo
+            argumentString += " " + info
         return (argumentString)
 
     def help_count(self):
@@ -264,19 +264,6 @@ Usage: <class name>.count()\n\
             print("** value missing **")
             return False
         return True
-
-    @staticmethod
-    def display_parenthesis_error(line, lineArgs):
-        """displays correct error if input is missing parenthasis"""
-        printLine = "*** syntax error, missing parenthesis: "
-        if "(" not in line:
-            printLine += lineArgs[0] + "." + lineArgs[2] + "?(?"
-        if ")" not in line[-1]:
-            if printLine == "*** syntax error: ":
-                printLine += line + "?)?"
-            else:
-                printLine += "?)?"
-        print(printLine)
 
 
 if __name__ == '__main__':

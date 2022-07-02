@@ -185,6 +185,8 @@ usage: <class name>.update(<id>, <dictionary representation>)"""
         method = lineAsArgs[0][1]
         info = lineAsArgs[0][2]
         argumentString = self.create_argument_string(className, method, info)
+        if argumentString is None:
+            return
         listOfCmdMethods[method](argumentString)
 
     @staticmethod
@@ -194,6 +196,9 @@ usage: <class name>.update(<id>, <dictionary representation>)"""
         if "," in info:
             if "{" in info:
                 InfoSplit = re.findall(r'(.*)(\{.*?\})$', info)
+                if len(InfoSplit) == 0:
+                    print("Incorrect dictionary syntax in " + info)
+                    return (None)
                 firstArgument = InfoSplit[0][0].replace(",", "")
                 dictionaryInLine = InfoSplit[0][1]
                 argumentString += firstArgument + dictionaryInLine
